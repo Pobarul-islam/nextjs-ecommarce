@@ -10,7 +10,8 @@ const data = {
       rating: 4.5,
       numReviews: 8,
       countInStock: 20,
-      description: 'A popular shirt',
+      description:
+        'A popular shirt in the world Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, dolores.',
     },
     {
       name: 'Fit Shirt',
@@ -76,3 +77,5 @@ const data = {
 };
 
 export default data;
+
+
