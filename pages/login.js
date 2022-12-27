@@ -7,12 +7,12 @@ export default function LoginScreen() {
   const {
     handleSubmit,
     register,
-    formState: {errors},
-  }=useForm();
+    formState: { errors },
+  } = useForm();
 
-  const submitHandler = ({email, password})=>{
-
-  }
+  const submitHandler = ({ email, password }) => {
+    console.log(email, password);
+  };
   return (
     <div>
       <Layouts title="Login">
@@ -21,28 +21,50 @@ export default function LoginScreen() {
             <div className="hero-content flex-col lg:flex-row-reverse">
               <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl  px-16 bg-base-100">
                 <div className="card-body">
-                  <div className="form-control">
+                  <div className="form-control items-center">
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
                     <input
-                   
-                      type="text"
-                      placeholder="email"
-                      className="input input-bordered"
+                      {...register('email', {
+                        required: 'Please enter your email !',
+                        pattern: {
+                          value:
+                            /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                          message: 'Please enter valid email !',
+                        },
+                      })}
+                      // type="email"
+                      placeholder="Email"
+                      className="input input-bordered w-60"
                     />
-                    {errors.email && (<div className='text-red-600 mt-2'>{errors.email.message}</div>)}
+                    {errors.email && (
+                      <div className="text-red-600 mt-2">
+                        {errors.email.message}
+                      </div>
+                    )}
                   </div>
-                  <div className="form-control">
+                  <div className="form-control items-center">
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
                     <input
-
-                      type="text"
-                      placeholder="password"
-                      className="input input-bordered"
+                      // type="password"
+                      {...register('password', {
+                        required: 'Please enter password',
+                        minLength: {
+                          value: 6,
+                          message: 'Password is more than 5',
+                        },
+                      })}
+                      placeholder="Password"
+                      className="input input-bordered w-60"
                     />
+                    {errors.password && (
+                      <div className="text-red-500 mt-2">
+                        {errors.password.message}{' '}
+                      </div>
+                    )}
                     <label className="label">
                       <span
                         href="#"
