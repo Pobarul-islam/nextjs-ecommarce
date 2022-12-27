@@ -6,7 +6,6 @@ import { HiOutlineXCircle } from 'react-icons/hi';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
 
-
 export default function CartScreen() {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
@@ -14,8 +13,13 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
-  const removeItemHendler = (item)=>{
-    dispatch({type : 'CART_REMOVE_ITEM', payload: item});
+  const removeItemHendler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+
+  const updateCartHandler = (item, qty)=>{
+    const quantity = Number(qty);
+    dispatch({type: 'CART_ADD_ITEM', payload: {...item, quantity}})
   }
   return (
     <Layouts title="Shopping Cart">
@@ -52,6 +56,20 @@ export default function CartScreen() {
                           {item.name}
                         </span>
                       </Link>
+                    </td>
+                    <td className="p-5 text-right">
+                      <select
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateCartHandler(item, e.target.value)
+                        }
+                      >
+                        {[...Array(item.countInStock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                     <td className="p-5 text-right">{item.quantity}</td>
                     <td className="p-5 text-right">${item.price}</td>
