@@ -1,15 +1,19 @@
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Store } from '../utils/Store';
 
 export default function Layouts({ children, title }) {
-    const {state, dispatch} = useContext(Store)
-    const {cart} = state;
-    const [cartItemsCount, setCartItemsCount] = useState(0);
-    useEffect(()=>{
-      setCartItemsCount(cart.cartItems.reduce((a, c)=>a + c.quantity, 0))
-    },[cart.cartItems]);
+  const { status, data: session } = useSession();
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+  useEffect(() => {
+    setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
+  }, [cart.cartItems]);
   return (
     <>
       <Head>
@@ -17,6 +21,9 @@ export default function Layouts({ children, title }) {
         <meta name="description" content="Ecommarce website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <ToastContainer position="bottom-center" limit={1}></ToastContainer>
+
       <div className="flex min-h-screen flex-col justify-between">
         <header>
           <nav className="flex h-12 justify-between shadow-md items-center px-4">
@@ -34,9 +41,16 @@ export default function Layouts({ children, title }) {
                   )}
                 </span>
               </Link>
-              <Link href="/login">
-                <span className="p-2">Login</span>
-              </Link>
+
+              {status === 'loading' ? (
+                'Loading'
+              ) : session?.user ? (
+                session.user.name
+              ) : (
+                <Link href="/login">
+                  <span className="p-2">Login</span>
+                </Link>
+              )}
             </div>
           </nav>
         </header>
