@@ -73,7 +73,7 @@ import dynamic from 'next/dynamic';
                         ))}
                       </select>
                     </td>
-                    <td className="p-5 text-right">{item.quantity}</td>
+               
                     <td className="p-5 text-right">${item.price}</td>
                     <td className="p-5 text-center">
                       <button>
