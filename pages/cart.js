@@ -9,6 +9,11 @@ export default function CartScreen() {
   const {
     cart: { cartItems },
   } = state;
+
+
+  const removeItemHendler = (item)=>{
+    dispatch({type : 'CART_REMOVE_ITEM', payload: item});
+  }
   return (
     <Layouts title="Shopping Cart">
       <h1 className="mb-4 text-xl">Shopping Cart</h1>
@@ -49,13 +54,25 @@ export default function CartScreen() {
                     <td className="p-5 text-right">{item.price}</td>
                     <td className="p-5 text-center">
                       <button>
-                        <HiOutlineXCircle></HiOutlineXCircle>
+                        <HiOutlineXCircle
+                          onClick={() => removeItemHendler(item)}
+                        ></HiOutlineXCircle>
                       </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="card p-5">
+            <ul>
+              <li>
+                <div className="p-3">
+                  Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}){''}
+                  : ${cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       )}
