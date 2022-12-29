@@ -1,22 +1,52 @@
-import React from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import CheckOutWizard from '../components/CheckOutWizard';
 import Layouts from '../components/Layouts';
+import { Store } from '../utils/Store';
 
-export default function shipping() {
+export default function ShippingScreen() {
   const {
     handleSubmit,
     register,
-    formState: {errors},
+    formState: { errors },
     setValue,
-    getValues,
-  }= useForm();
-  const submitHandler = ({fullName, address, city, postalCode, country})=>{
+  } = useForm();
+
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const { shippingAddress } = cart;
+  const router = useRouter();
+
+  useEffect(() => {
+    setValue('fullName', shippingAddress.fullName);
+    setValue('address', shippingAddress.address);
+    setValue('city', shippingAddress.city);
+    setValue('postalCode', shippingAddress.postalCode);
+    setValue('country', shippingAddress.country);
+  }, [setValue, shippingAddress]);
+
+  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: { fullName, address, city, postalCode, country },
     });
-  }
+    Cookies.set(
+      'cart',
+      JSON.stringify({
+        ...cart,
+        shippingAddress: {
+          fullName,
+          address,
+          city,
+          postalCode,
+          country,
+        },
+      })
+    );
+    router.push('/payment');
+  };
   return (
     <Layouts title="Shipping Address">
       <CheckOutWizard activeStep={1} />
@@ -29,7 +59,7 @@ export default function shipping() {
           <label htmlFor="fullName">Full Name</label>
           <input
             type="text"
-            className="w-full input"
+            className="w-full input input-primary"
             id="fullName"
             autoFocus
             {...register('fullName', {
@@ -44,7 +74,7 @@ export default function shipping() {
           <label htmlFor="address">Address</label>
           <input
             type="text"
-            className="w-full input"
+            className="w-full input input-primary"
             id="address"
             {...register('address', {
               required: 'Please enter your address',
@@ -59,7 +89,7 @@ export default function shipping() {
           <label htmlFor="city">City</label>
           <input
             type="text"
-            className="w-full input"
+            className="w-full input input-primary"
             id="city"
             {...register('city', {
               required: 'Please enter your city',
@@ -74,7 +104,7 @@ export default function shipping() {
           <label htmlFor="postalCode">Postal code</label>
           <input
             type="text"
-            className="w-full input"
+            className="w-full input input-primary"
             id="postalCode"
             {...register('postalCode', {
               required: 'Please enter your postalCode',
@@ -92,7 +122,7 @@ export default function shipping() {
           <label htmlFor="country">Country</label>
           <input
             type="text"
-            className="w-full input"
+            className="w-full input input-primary"
             id="country"
             {...register('country', {
               required: 'Please enter your country',
@@ -110,3 +140,6 @@ export default function shipping() {
     </Layouts>
   );
 }
+
+
+ShippingScreen.auth = true;
