@@ -1,33 +1,31 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import Layouts from '../../components/Layouts'
+import Layouts from '../../components/Layouts';
 import data from '../../utils/data';
 import { Store } from '../../utils/Store';
 
 export default function ProductScreen() {
-    const {state, dispatch} = useContext(Store)
-    const {query} = useRouter();
-    const router = useRouter();
-    const {slug} = query;
-    const product = data.products.find(x=>x.slug==slug);
-    if(!product){
-        return <div>Product Not Found</div>
+  const { state, dispatch } = useContext(Store);
+  const { query } = useRouter();
+  const router = useRouter();
+  const { slug } = query;
+  const product = data.products.find((x) => x.slug == slug);
+  if (!product) {
+    return <div>Product Not Found</div>;
+  }
+
+  const addToCartHandler = () => {
+    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    if (product.countInStock < quantity) {
+      alert('Sorry, Product is out of Stock');
+      return;
     }
-
-
-    const addToCartHandler = ()=>{
-        const existItem = state.cart.cartItems.find((x)=>x.slug === product.slug);
-        const quantity = existItem ? existItem.quantity + 1 : 1;
-        if(product.countInStock < quantity){
-
-            alert("Sorry, Product is out of Stock")
-            return;
-        }
-        dispatch({type: 'CART_ADD_ITEM', payload: {...product, quantity}});
-        router.push('/cart');
-    };
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    router.push('/cart');
+  };
 
   return (
     <Layouts title={product.name}>
@@ -54,7 +52,7 @@ export default function ProductScreen() {
             <li>
               {product.rating} of {product.numReviews} reviews
             </li>
-            <li>Description: {product.description}</li>
+            <li>description: {product.description}</li>
           </ul>
         </div>
         <div>
@@ -63,11 +61,16 @@ export default function ProductScreen() {
               <div>Price</div>
               <div>${product.price}</div>
             </div>
-            <div className='mb-2 flex justify-between'>
+            <div className="mb-2 flex justify-between">
               <div>Status</div>
               <div>{product.countInStock > 0 ? 'In Stock' : 'Unavailable'}</div>
             </div>
-           <button className='primary-button w-full' onClick={addToCartHandler}>Add to Cart</button>
+            <button
+              className="primary-button w-full"
+              onClick={addToCartHandler}
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

@@ -7,7 +7,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Store } from '../utils/Store';
 
-
 export default function Layouts({ children, title }) {
   const { status, data: session } = useSession();
   const { state, dispatch } = useContext(Store);
@@ -108,7 +107,7 @@ export default function Layouts({ children, title }) {
                   </span>
                   <span className="text-info">Subtotal: $999</span>
                   <div className="card-actions">
-                    <Link href='/cart' className="btn btn-primary btn-block">
+                    <Link href="/cart" className="btn btn-primary btn-block">
                       View cart
                     </Link>
                   </div>

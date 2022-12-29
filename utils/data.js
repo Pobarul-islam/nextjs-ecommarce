@@ -13,7 +13,6 @@ const data = {
       password: bcrypt.hashSync('123456'),
       isAdmin: false,
     },
-  
   ],
   products: [
     {
