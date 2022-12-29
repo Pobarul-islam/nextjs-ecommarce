@@ -1,11 +1,11 @@
 import React from 'react'
+import CheckOutWizard from '../components/CheckOutWizard'
+import Layouts from '../components/Layouts'
 
-function ShippinScreen() {
+export default function shipping() {
   return (
-    <div>
-      
-    </div>
+    <Layouts title="Shipping Address">
+      <CheckOutWizard activeStep={1}/>
+    </Layouts>
   )
 }
-
-export default ShippinScreen;
