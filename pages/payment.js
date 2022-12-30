@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import CheckoutWizard from '../components/CheckoutWizard';
 import Layouts from '../components/Layouts';
 import { Store } from '../utils/Store';
+import PlaceOrderScreen from './placeOrder';
 
 export default function PaymentScreen() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -73,3 +74,5 @@ export default function PaymentScreen() {
     </Layouts>
   );
 }
+
+PlaceOrderScreen.auth = true;

@@ -9,8 +9,7 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-
- function CartScreen() {
+function CartScreen() {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
@@ -21,15 +20,15 @@ import { toast } from 'react-toastify';
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
 
-  const updateCartHandler = async(item, qty)=>{
+  const updateCartHandler = async (item, qty) => {
     const quantity = Number(qty);
-    const {data} = await axios.get(`/api/products/${item._id}`);
-    if(data.countInStock <quantity){
-        return toast.error('Sorry, Product is out of Stock');
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock < quantity) {
+      return toast.error('Sorry, Product is out of Stock');
     }
-    dispatch({type: 'CART_ADD_ITEM', payload: {...item, quantity}})
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
     toast.success('Product updated in the cart');
-  }
+  };
   return (
     <Layouts title="Shopping Cart">
       <h1 className="mb-4 text-xl">Shopping Cart</h1>
@@ -46,7 +45,7 @@ import { toast } from 'react-toastify';
                   <th className="p-5 text-left">Item</th>
                   <th className="p-5 text-right">Quantity</th>
                   <th className="p-5 text-right">Price</th>
-                  <th className="p-5">Action</th>
+                  <th className="p-5">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,7 +79,7 @@ import { toast } from 'react-toastify';
                         ))}
                       </select>
                     </td>
-               
+
                     <td className="p-5 text-right">${item.price}</td>
                     <td className="p-5 text-center">
                       <button>
@@ -98,8 +97,8 @@ import { toast } from 'react-toastify';
             <ul>
               <li>
                 <div className="p-3 text-xl">
-                  Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}){''}
-                  : ${cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                  Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}) : $
+                  {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                 </div>
               </li>
               <li>
@@ -118,5 +117,4 @@ import { toast } from 'react-toastify';
   );
 }
 
-
-export default dynamic(()=> Promise.resolve(CartScreen), {ssr:false})
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
