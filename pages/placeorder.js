@@ -20,7 +20,7 @@ function PlaceOrderScreen() {
     cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
 
-  const shippingPrice = itemsPrice > 200 ? 0 : 15;
+  const shippingPrice = itemsPrice > 100 ? 0 : 15;
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
   const router = useRouter();
@@ -58,6 +58,8 @@ function PlaceOrderScreen() {
       toast.error(getError(err));
     }
   };
+
+  
   return (
     <Layouts title="Place Order">
       <CheckOutWizard activeStep={3} />
@@ -84,7 +86,7 @@ function PlaceOrderScreen() {
               <h2>Payment Method</h2>
               <div>{paymentMethod}</div>
               <div>
-                <Link href="/shipping">Edit</Link>
+                <Link href="/payment">Edit</Link>
               </div>
             </div>
             <div className="card overflow-x-auto p-5">
@@ -118,7 +120,7 @@ function PlaceOrderScreen() {
                       <td className="p-5 text-right">{item.quantity}</td>
                       <td className="p-5 text-right">${item.price}</td>
                       <td className="p-5 text-right">
-                        ${item.price * item.price}
+                        ${item.quantity * item.price}
                       </td>
                     </tr>
                   ))}
