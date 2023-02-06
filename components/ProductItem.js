@@ -18,7 +18,7 @@ export default function ProductItem({ product, addToCartHandler }) {
         <p className="mb-2">{product.brand}</p>
         <p>${product.price}</p>
         <button
-          className="primary-button"
+          className="btn btn-primary"
           type="button"
           onClick={() => addToCartHandler(product)}
         >

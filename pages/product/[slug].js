@@ -11,25 +11,23 @@ import db from '../../utils/db';
 import { Store } from '../../utils/Store';
 
 export default function ProductScreen(props) {
-  const {product} = props; 
+  const { product } = props;
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
-  if(!product){
-    return <Layouts title="Product Not Found">Product Not Found</Layouts>
+  if (!product) {
+    return <Layouts title="Product Not Found">Product Not Found</Layouts>;
   }
   if (!product) {
     return <div>Product Not Found</div>;
   }
 
-  const addToCartHandler = async() => {
+  const addToCartHandler = async () => {
     const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const {data} = await axios.get(`/api/products/${product._id}`);
-
+    const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
       return toast.error('Sorry, Product is out of Stock');
-    
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     router.push('/cart');
@@ -74,7 +72,7 @@ export default function ProductScreen(props) {
               <div>{product.countInStock > 0 ? 'In Stock' : 'Unavailable'}</div>
             </div>
             <button
-              className="primary-button w-full"
+              className="btn btn-primary w-full"
               onClick={addToCartHandler}
             >
               Add to Cart
@@ -85,7 +83,6 @@ export default function ProductScreen(props) {
     </Layouts>
   );
 }
-
 
 export async function getServerSideProps(context) {
   const { params } = context;

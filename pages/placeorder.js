@@ -13,7 +13,9 @@ import { Store } from '../utils/Store';
 function PlaceOrderScreen() {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
-  const { cartItems, shippingAddress, paymentMethod } = cart;
+  const { cartItems, shippingAddress, paymentMethod,} = cart;
+ 
+  
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
 
   const itemsPrice = round2(
@@ -31,10 +33,11 @@ function PlaceOrderScreen() {
   }, [paymentMethod, router]);
 
   const [loading, setLoading] = useState(false);
+
   const placeOrderHandler = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post('/api/orders', {
+      const { data } = await axios.post(`api/orders`, {
         orderItems: cartItems,
         shippingAddress,
         paymentMethod,
@@ -52,18 +55,17 @@ function PlaceOrderScreen() {
           cartItems: [],
         })
       );
-      router.push(`/order/${data._id}`)
+      router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
       toast.error(getError(err));
     }
   };
 
-  
   return (
     <Layouts title="Place Order">
       <CheckOutWizard activeStep={3} />
-      <h1 className="mb-4 text-xl">Plce Order</h1>
+      <h1 className="mb-4 text-xl">Place Order</h1>
       {cartItems.length === 0 ? (
         <div>
           Cart is Empty. <Link href="/">Go Shopping</Link>
@@ -79,14 +81,18 @@ function PlaceOrderScreen() {
                 {shippingAddress.country}
               </div>
               <div>
-                <Link href="/shipping">Edit</Link>
+                <Link href="/shipping" className="btn btn-primary">
+                  Edit
+                </Link>
               </div>
             </div>
             <div className="cart p-5">
               <h2>Payment Method</h2>
               <div>{paymentMethod}</div>
               <div>
-                <Link href="/payment">Edit</Link>
+                <Link href="/payment" className="btn btn-primary">
+                  Edit
+                </Link>
               </div>
             </div>
             <div className="card overflow-x-auto p-5">
@@ -127,7 +133,9 @@ function PlaceOrderScreen() {
                 </tbody>
               </table>
               <div>
-                <Link href="/cart">Edit</Link>
+                <Link href="/cart" className="btn btn-primary">
+                  Edit
+                </Link>
               </div>
             </div>
           </div>
@@ -162,8 +170,9 @@ function PlaceOrderScreen() {
                 <button
                   disabled={loading}
                   onClick={placeOrderHandler}
-                  className="primary-button w-full"
+                  className="btn btn-primary w-full"
                 >
+                  
                   {loading ? 'Loading...' : 'Place Order'}
                 </button>
               </li>

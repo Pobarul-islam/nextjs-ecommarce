@@ -134,12 +134,11 @@ export default function ShippingScreen() {
           )}
         </div>
         <div className="mb-4 flex justify-between">
-          <button className="primary-button">Next</button>
+          <button className="btn btn-primary">Next</button>
         </div>
       </form>
     </Layouts>
   );
 }
-
 
 ShippingScreen.auth = true;
